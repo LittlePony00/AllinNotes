@@ -47,7 +47,7 @@ public class Add_new_note_activity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
-        saveNewNote();
         super.onStop();
+        saveNewNote();
     }
 }

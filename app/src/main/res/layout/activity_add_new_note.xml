@@ -11,8 +11,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="200dp"
+        android:layout_marginBottom="22dp"
         android:hint="Enter your title"
+        android:maxLines="1"
+        android:minLines="1"
+        app:layout_constraintBottom_toTopOf="@+id/description"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:singleLine="true"
         tools:ignore="MissingConstraints" />
 
     <EditText
@@ -22,7 +29,10 @@
         android:layout_marginTop="30dp"
         android:layout_marginBottom="350dp"
         android:hint="Enter your description"
+        android:scrollbars="vertical"
         app:layout_constraintBottom_toTopOf="@+id/save"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title"
         tools:ignore="MissingConstraints" />
 

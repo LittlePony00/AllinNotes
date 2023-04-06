@@ -25,7 +25,7 @@
         android:id="@+id/delete"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Delete"
+        android:text="@string/delete"
         app:layout_constraintBottom_toBottomOf="@id/new_note"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginBottom="50dp"
@@ -37,7 +37,7 @@
         android:id="@+id/new_note"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="New Note"
+        android:text="@string/new_note"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_margin="30dp" />
