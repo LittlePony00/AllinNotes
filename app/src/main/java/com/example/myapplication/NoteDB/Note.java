@@ -14,4 +14,5 @@ public class Note {
 
     @ColumnInfo(name = "description")
     public String description;
+
 }

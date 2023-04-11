@@ -16,16 +16,14 @@ import com.example.myapplication.R;
 import java.util.List;
 
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomViewHolder> {
+    RecyclerViewIntefrace recyclerViewIntefrace;
 
     Context context;
     List<Note> noteList;
-    private onItemClickListener clickListener;
 
-
-
-    public CustomAdapter(Context context, onItemClickListener clickListener){
+    public CustomAdapter(Context context, RecyclerViewIntefrace recyclerViewIntefrace){
         this.context = context;
-        this.clickListener = clickListener;
+        this.recyclerViewIntefrace = recyclerViewIntefrace;
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -41,18 +39,13 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
     public CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.custom_layout, parent, false);
 
-        return new CustomViewHolder(view);
+        return new CustomViewHolder(view, recyclerViewIntefrace);
     }
 
     @Override
     public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
         holder.layout_title.setText(this.noteList.get(position).title);
         holder.layout_description.setText(this.noteList.get(position).description);
-
-
-        holder.itemView.setOnClickListener(view -> {
-            clickListener.onClick(noteList.get(position));
-        });
     }
 
     @Override
@@ -67,10 +60,23 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
     public static class CustomViewHolder extends RecyclerView.ViewHolder {
         TextView layout_title;
         TextView layout_description;
-        public CustomViewHolder(@NonNull View itemView) {
+        public CustomViewHolder(@NonNull View itemView, RecyclerViewIntefrace recyclerViewIntefrace) {
             super(itemView);
             layout_title = itemView.findViewById(R.id.layout_title);
             layout_description = itemView.findViewById(R.id.layout_description);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (recyclerViewIntefrace != null) {
+                        int position = getAdapterPosition();
+
+                        if (position != RecyclerView.NO_POSITION){
+                            recyclerViewIntefrace.onItemClick(position);
+                        }
+                    }
+                }
+            });
         }
     }
 }

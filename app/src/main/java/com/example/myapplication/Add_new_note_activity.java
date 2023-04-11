@@ -7,15 +7,20 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.myapplication.NoteDB.Note;
 import com.example.myapplication.NoteDB.NoteDB;
+
+import java.util.List;
 
 public class Add_new_note_activity extends AppCompatActivity {
 
     EditText title, description;
     Button save;
     NoteDB db;
+    Note note;
+    List<Note> noteList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +42,7 @@ public class Add_new_note_activity extends AppCompatActivity {
     private void saveNewNote() {
         if (!title.getText().toString().isEmpty() || !description.getText().toString().isEmpty()) {
             db = NoteDB.getInstance(this.getApplicationContext());
-            Note note = new Note();
+            note = new Note();
             note.title = title.getText().toString();
             note.description = description.getText().toString();
             db.noteDAO().insert(note);
@@ -47,7 +52,13 @@ public class Add_new_note_activity extends AppCompatActivity {
     }
 
     private void editText() {
-        String edit = getIntent().getStringExtra("EditNote");
-        title.setText(edit);
+        String extra_title = getIntent().getStringExtra("TITLE");
+        String extra_description = getIntent().getStringExtra("DESCRIPTION");
+
+        if (extra_title != null || extra_description != null) {
+            title.setText(extra_title);
+            description.setText(extra_description);
+        }
     }
+
 }

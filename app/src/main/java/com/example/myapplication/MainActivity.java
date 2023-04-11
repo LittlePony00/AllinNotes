@@ -16,13 +16,15 @@ import android.widget.Toast;
 import com.example.myapplication.NoteDB.CustomAdapter;
 import com.example.myapplication.NoteDB.Note;
 import com.example.myapplication.NoteDB.NoteDB;
+import com.example.myapplication.NoteDB.RecyclerViewIntefrace;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements RecyclerViewIntefrace {
     CustomAdapter noteAdapter;
     List<Note> noteList;
     NoteDB db;
+    Note note;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -33,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
         db = NoteDB.getInstance(this.getApplicationContext());
         Button new_note = findViewById(R.id.new_note);
         Button delete = findViewById(R.id.delete);
-
         new_note.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -60,12 +61,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
-        noteAdapter = new CustomAdapter(this, new CustomAdapter.onItemClickListener() {
-            @Override
-            public void onClick(Note note) {
-                showNoteText(note);
-            }
-        });
+        noteAdapter = new CustomAdapter(this, this);
         recyclerView.setAdapter(noteAdapter);
     }
 
@@ -94,11 +90,22 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    @Override
+    public void onItemClick(int positon) {
 
-    protected void showNoteText(Note note) {
-        Intent intent = new Intent(this, Add_new_note_activity.class);
-        intent.putExtra("EditNote","kdlsdkdkal");
+        Intent intent = new Intent(MainActivity.this, Add_new_note_activity.class);
+
+
+        intent.putExtra("TITLE", noteList.get(positon).title);
+        intent.putExtra("DESCRIPTION", noteList.get(positon).description);
+
+        db.noteDAO().delete(noteList.get(positon));
+
         startActivity(intent);
     }
 
+    @Override
+    public void onLongItemClick(int position) {
+
+    }
 }
