@@ -15,6 +15,7 @@ public class Add_new_note_activity extends AppCompatActivity {
 
     EditText title, description;
     Button save;
+    NoteDB db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +25,7 @@ public class Add_new_note_activity extends AppCompatActivity {
         title = findViewById(R.id.title);
         description = findViewById(R.id.description);
         save = findViewById(R.id.save);
-
+        editText();
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -35,7 +36,7 @@ public class Add_new_note_activity extends AppCompatActivity {
 
     private void saveNewNote() {
         if (!title.getText().toString().isEmpty() || !description.getText().toString().isEmpty()) {
-            NoteDB db = NoteDB.getInstance(this.getApplicationContext());
+            db = NoteDB.getInstance(this.getApplicationContext());
             Note note = new Note();
             note.title = title.getText().toString();
             note.description = description.getText().toString();
@@ -45,9 +46,8 @@ public class Add_new_note_activity extends AppCompatActivity {
         finish();
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        saveNewNote();
+    private void editText() {
+        String edit = getIntent().getStringExtra("EditNote");
+        title.setText(edit);
     }
 }

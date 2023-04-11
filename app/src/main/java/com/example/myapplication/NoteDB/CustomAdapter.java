@@ -5,6 +5,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,9 +19,13 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
 
     Context context;
     List<Note> noteList;
+    private onItemClickListener clickListener;
 
-    public CustomAdapter(Context context){
+
+
+    public CustomAdapter(Context context, onItemClickListener clickListener){
         this.context = context;
+        this.clickListener = clickListener;
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -44,11 +49,19 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
         holder.layout_title.setText(this.noteList.get(position).title);
         holder.layout_description.setText(this.noteList.get(position).description);
 
+
+        holder.itemView.setOnClickListener(view -> {
+            clickListener.onClick(noteList.get(position));
+        });
     }
 
     @Override
     public int getItemCount() {
         return noteList.size();
+    }
+
+    public interface onItemClickListener {
+        void onClick(Note note);
     }
 
     public static class CustomViewHolder extends RecyclerView.ViewHolder {

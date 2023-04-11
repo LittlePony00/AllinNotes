@@ -60,7 +60,12 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
-        noteAdapter = new CustomAdapter(this);
+        noteAdapter = new CustomAdapter(this, new CustomAdapter.onItemClickListener() {
+            @Override
+            public void onClick(Note note) {
+                showNoteText(note);
+            }
+        });
         recyclerView.setAdapter(noteAdapter);
     }
 
@@ -88,4 +93,12 @@ public class MainActivity extends AppCompatActivity {
 
         super.onActivityResult(requestCode, resultCode, data);
     }
+
+
+    protected void showNoteText(Note note) {
+        Intent intent = new Intent(this, Add_new_note_activity.class);
+        intent.putExtra("EditNote","kdlsdkdkal");
+        startActivity(intent);
+    }
+
 }
