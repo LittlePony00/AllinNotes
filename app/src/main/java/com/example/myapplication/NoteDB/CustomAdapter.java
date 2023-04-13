@@ -13,13 +13,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomViewHolder> {
     RecyclerViewIntefrace recyclerViewIntefrace;
 
     Context context;
-    List<Note> noteList;
+    List<Note> noteList = new ArrayList<>();
 
     public CustomAdapter(Context context, RecyclerViewIntefrace recyclerViewIntefrace){
         this.context = context;
@@ -53,10 +54,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
         return noteList.size();
     }
 
-    public interface onItemClickListener {
-        void onClick(Note note);
-    }
-
     public static class CustomViewHolder extends RecyclerView.ViewHolder {
         TextView layout_title;
         TextView layout_description;
@@ -65,17 +62,26 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
             layout_title = itemView.findViewById(R.id.layout_title);
             layout_description = itemView.findViewById(R.id.layout_description);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (recyclerViewIntefrace != null) {
-                        int position = getAdapterPosition();
+            itemView.setOnClickListener(view -> {
+                if (recyclerViewIntefrace != null) {
+                    int position = getAdapterPosition();
 
-                        if (position != RecyclerView.NO_POSITION){
-                            recyclerViewIntefrace.onItemClick(position);
-                        }
+                    if (position != RecyclerView.NO_POSITION){
+                        recyclerViewIntefrace.onItemClick(position);
                     }
                 }
+            });
+
+            itemView.setOnLongClickListener(view -> {
+                if (recyclerViewIntefrace != null) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION){
+                        recyclerViewIntefrace.onLongItemClick(position);
+                    }
+                    return true;
+                }
+
+                return false;
             });
         }
     }
