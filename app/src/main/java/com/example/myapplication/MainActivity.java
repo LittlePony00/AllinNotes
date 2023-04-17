@@ -60,8 +60,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewIntef
     private void initRecycleView() {
         RecyclerView recyclerView = findViewById(R.id.recycle_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
-        recyclerView.addItemDecoration(dividerItemDecoration);
         noteAdapter = new CustomAdapter(this, this);
         recyclerView.setAdapter(noteAdapter);
         noteAdapter.setNoteList(noteList);
@@ -119,20 +117,12 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewIntef
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Диалог")
                 .setMessage("Текст в диалоге")
-                .setNegativeButton("Закрепить", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        pinNote(position);
-                    }
-                })
-                .setPositiveButton("УДАЛИТЬ", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        deleteNote(position);
-                        loadNote();
-                    }
+                .setNegativeButton("Закрепить", (dialog, id) -> pinNote(position))
+                .setPositiveButton("УДАЛИТЬ", (dialog, id) -> {
+                    deleteNote(position);
+                    loadNote();
                 }
                 );
         builder.create().show();
     }
-
 }

@@ -2,7 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@null">
+    android:layout_marginTop="10dp"
+    android:background="@drawable/radius"
+    >
 
     <TextView
         android:layout_width="wrap_content"
@@ -18,7 +20,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/layout_description"
         android:layout_alignTop="@id/layout_title"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:layout_alignStart="@id/layout_title"
         android:layout_alignParentTop="true"
         android:maxLines="2"

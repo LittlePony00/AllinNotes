@@ -40,11 +40,8 @@ public class Add_new_note_activity extends AppCompatActivity implements Serializ
         title = findViewById(R.id.title);
         description = findViewById(R.id.description);
         save = findViewById(R.id.save);
-        image_button = findViewById(R.id.image_button);
 
         editText();
-
-        image_button.setOnClickListener(view -> createImage());
         save.setOnClickListener(view -> saveNewNote());
     }
 
@@ -78,15 +75,4 @@ public class Add_new_note_activity extends AppCompatActivity implements Serializ
             description.setText(noteList.get(Integer.parseInt(id)).description);
         }
     }
-
-    private void createImage() {
-        LinearLayout linearLayout = new LinearLayout(this);
-        ImageView imageView = new ImageView(this);
-        imageView.setImageResource(R.drawable.ic_launcher_background);
-        imageView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
-
-        linearLayout.addView(imageView);
-    }
-
 }
