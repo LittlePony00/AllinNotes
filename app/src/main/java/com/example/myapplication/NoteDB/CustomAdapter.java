@@ -5,7 +5,10 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -33,6 +36,16 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
         notifyDataSetChanged();
     }
 
+    public void deleteItemFromNoteList(int id) {
+        noteList.remove(id);
+        notifyItemRemoved(id);
+    }
+
+    public void insertItemToNoteList(Note note) {
+        this.noteList.add(note);
+        notifyItemInserted(0);
+    }
+
 
 
     @NonNull
@@ -46,6 +59,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
     @Override
     public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
         holder.layout_title.setText(this.noteList.get(position).title);
+        holder.relativeLayout.startAnimation(AnimationUtils.loadAnimation(holder.itemView.getContext(), R.anim.for_recycle_view));
     }
 
     @Override
@@ -56,10 +70,12 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
     public static class CustomViewHolder extends RecyclerView.ViewHolder {
         TextView layout_title;
         TextView layout_description;
+        RelativeLayout relativeLayout;
         public CustomViewHolder(@NonNull View itemView, RecyclerViewIntefrace recyclerViewIntefrace) {
             super(itemView);
             layout_title = itemView.findViewById(R.id.layout_title);
             layout_description = itemView.findViewById(R.id.layout_description);
+            relativeLayout = itemView.findViewById(R.id.custom_layout);
 
             itemView.setOnClickListener(view -> {
                 if (recyclerViewIntefrace != null) {

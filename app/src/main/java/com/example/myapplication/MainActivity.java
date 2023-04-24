@@ -32,7 +32,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewIntef
     CustomAdapter noteAdapter;
     List<Note> noteList = new ArrayList<>();
     NoteDB db;
-    Note note;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -48,8 +47,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewIntef
 
         delete.setOnClickListener(view -> {
             deleteNote(0);
-            initRecycleView();
-            loadNote();
         });
 
         initRecycleView();
@@ -66,12 +63,17 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewIntef
     }
 
     private void deleteNote(int position) {
-
+        noteList = db.noteDAO().getAllNotes();
         if (noteList.size() != 0) {
             db.noteDAO().delete(noteList.get(position));
+            noteAdapter.deleteItemFromNoteList(position);
         }
+
+    }
+
+    private void insertNote() {
         noteList = db.noteDAO().getAllNotes();
-        noteAdapter.setNoteList(noteList);
+        noteAdapter.insertItemToNoteList(noteList.get(0));
 
     }
     private void loadNote() {
@@ -92,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewIntef
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == NEW_NOTE) {
-            loadNote();
+            insertNote();
         }
 
         if (requestCode == EDIT_NOTE){
@@ -103,11 +105,11 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewIntef
     }
 
     @Override
-    public void onItemClick(int positon) {
+    public void onItemClick(int position) {
 
         Intent intent = new Intent(MainActivity.this, Add_new_note_activity.class);
 
-        intent.putExtra("EDIT", String.valueOf(positon));
+        intent.putExtra("EDIT", String.valueOf(position));
 
         startActivityForResult(intent, EDIT_NOTE);
     }
@@ -120,7 +122,6 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewIntef
                 .setNegativeButton("Закрепить", (dialog, id) -> pinNote(position))
                 .setPositiveButton("УДАЛИТЬ", (dialog, id) -> {
                     deleteNote(position);
-                    loadNote();
                 }
                 );
         builder.create().show();
