@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.myapplication.NoteDB.CustomAdapter;
@@ -40,8 +41,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewIntef
         setContentView(R.layout.activity_main);
 
         db = NoteDB.getInstance(this.getApplicationContext());
-        Button new_note = findViewById(R.id.new_note);
-        Button delete = findViewById(R.id.delete);
+        ImageButton new_note = findViewById(R.id.new_note);
+        ImageButton delete = findViewById(R.id.delete);
         new_note.setOnClickListener(view ->
                 startActivityForResult(new Intent(MainActivity.this, Add_new_note_activity.class), NEW_NOTE));
 
@@ -73,9 +74,12 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewIntef
 
     private void insertNote() {
         noteList = db.noteDAO().getAllNotes();
-        noteAdapter.insertItemToNoteList(noteList.get(0));
+        if (noteList.size() != 0) {
+            noteAdapter.insertItemToNoteList(noteList);
+        }
 
     }
+
     private void loadNote() {
         db = NoteDB.getInstance(this.getApplicationContext());
         noteList = db.noteDAO().getAllNotes();
@@ -90,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewIntef
 
         noteAdapter.setNoteList(noteList);
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

@@ -41,9 +41,9 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
         notifyItemRemoved(id);
     }
 
-    public void insertItemToNoteList(Note note) {
-        this.noteList.add(note);
-        notifyItemInserted(0);
+    public void insertItemToNoteList(List<Note> noteList) {
+        this.noteList.add(noteList.get(noteList.size()-1));
+        notifyItemInserted(noteList.size()-1);
     }
 
 
