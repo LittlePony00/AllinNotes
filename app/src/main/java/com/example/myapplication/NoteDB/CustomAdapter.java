@@ -102,13 +102,13 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
         });
 
         if (x == holder.getAdapterPosition()) {
-            holder.relativeLayout.setBackgroundColor(R.color.white);
+            holder.relativeLayout.setBackgroundColor(context.getColor(R.color.grey));
 
         } else if (x == -1) {
-            holder.relativeLayout.setBackgroundColor(R.color.black);
+            holder.relativeLayout.setBackgroundColor(context.getColor(R.color.black));
         }
         else {
-            holder.relativeLayout.setBackgroundColor(R.color.black);
+            holder.relativeLayout.setBackgroundColor(context.getColor(R.color.black));
         }
 
     }

@@ -59,12 +59,14 @@
         android:id="@+id/new_space"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/save"
         android:layout_margin="16dp"
         android:text="add"/>
 
     <Button
         android:id="@+id/save"
+        android:backgroundTint="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
