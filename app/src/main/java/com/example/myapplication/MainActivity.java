@@ -3,6 +3,7 @@ package com.example.myapplication;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -13,7 +14,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -29,7 +32,10 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements RecyclerViewIntefrace {
     private final int NEW_NOTE = 100;
+    private int checkToolBar = -1;
     private final int EDIT_NOTE = 101;
+    private Toolbar staticBar, actionBar;
+    private ImageButton delete;
     CustomAdapter noteAdapter;
     List<Note> noteList = new ArrayList<>();
     NoteDB db;
@@ -39,6 +45,11 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewIntef
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        staticBar = findViewById(R.id.staticBar);
+        actionBar = findViewById(R.id.actionBar);
+        delete = findViewById(R.id.toolbar_delete);
+
 
         db = NoteDB.getInstance(this.getApplicationContext());
         ImageButton new_note = findViewById(R.id.new_note);
@@ -61,6 +72,8 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewIntef
         noteAdapter = new CustomAdapter(this, this);
         recyclerView.setAdapter(noteAdapter);
         noteAdapter.setNoteList(noteList);
+        recyclerView.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),R.anim.for_recycle_view));
+
     }
 
     private void deleteNote(int position) {
@@ -95,11 +108,21 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewIntef
         noteAdapter.setNoteList(noteList);
     }
 
+    private void changeToolBar() {
+        if (staticBar.getVisibility() == View.VISIBLE) {
+            staticBar.setVisibility(View.INVISIBLE);
+            actionBar.setVisibility(View.VISIBLE);
+        }else {
+            staticBar.setVisibility(View.VISIBLE);
+            actionBar.setVisibility(View.INVISIBLE);
+        }
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == NEW_NOTE) {
-            insertNote();
+            loadNote();
         }
 
         if (requestCode == EDIT_NOTE){
@@ -119,16 +142,36 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewIntef
         startActivityForResult(intent, EDIT_NOTE);
     }
 
+
+    @SuppressLint({"UseSupportActionBar", "ResourceAsColor"})
     @Override
     public void onLongItemClick(int position) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Диалог")
-                .setMessage("Текст в диалоге")
-                .setNegativeButton("Закрепить", (dialog, id) -> pinNote(position))
-                .setPositiveButton("УДАЛИТЬ", (dialog, id) -> {
-                    deleteNote(position);
-                }
-                );
-        builder.create().show();
+
+        if (checkToolBar == -1) {
+            checkToolBar = position;
+            changeToolBar();
+        } else if (checkToolBar == position) {
+            changeToolBar();
+            checkToolBar = -1;
+        }else {
+            checkToolBar = position;
+        }
+
+        delete.setOnClickListener(view -> {
+            deleteNote(position);
+            checkToolBar = -1;
+            noteAdapter.setX(-1);
+            changeToolBar();
+        });
+
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        builder.setTitle("Диалог")
+//                .setMessage("Текст в диалоге")
+//                .setNegativeButton("Закрепить", (dialog, id) -> pinNote(position))
+//                .setPositiveButton("УДАЛИТЬ", (dialog, id) -> {
+//                    deleteNote(position);
+//                }
+//                );
+//        builder.create().show();
     }
 }

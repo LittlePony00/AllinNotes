@@ -18,8 +18,9 @@ public class Logo_Activity extends Activity {
     private ImageView imageView;
     private Animation animIm, animTv;
     private final String s = "AllinNotes";
-    StringBuilder stringBuilder;
     int i = 0;
+
+    MainActivity mainActivity;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -35,7 +36,6 @@ public class Logo_Activity extends Activity {
         imageView = findViewById(R.id.imageView);
 
         imageView.startAnimation(animIm);
-//        textView.startAnimation(animTv);
 
         textView.setText("");
 
@@ -54,7 +54,24 @@ public class Logo_Activity extends Activity {
 //            }
 //        }.start();
 
+        setTextView();
+        startMainActivity();
 
+    }
+
+    private void startMainActivity() {
+        new Thread(() -> {
+            try {
+                Thread.sleep(1800);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            startActivity(new Intent(Logo_Activity.this, MainActivity.class));
+            finish();
+        }).start();
+    }
+
+    private void setTextView() {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -115,26 +132,6 @@ public class Logo_Activity extends Activity {
                 textView.append("s");
             }
         }, 1600);
-
-        startMainActivity();
-
-    }
-
-    private void startMainActivity() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(1800);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-                startActivity(new Intent(Logo_Activity.this, MainActivity.class));
-                finish();
-            }
-        }).start();
-
-
     }
 
 }
