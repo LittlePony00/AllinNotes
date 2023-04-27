@@ -113,7 +113,7 @@ public class Add_new_note_activity extends AppCompatActivity implements Serializ
         if (requestCode == SELECT_IMAGE) {
             LinearLayout constraintLayout = findViewById(R.id.add_new_note_activity);
             ImageView imageView = new ImageView(this);
-            Uri selectedImage = Uri.parse(data.toUri(Intent.URI_ALLOW_UNSAFE));
+            Uri selectedImage = data.getData();
             if (selectedImage != null)
                 imageView.setImageURI(selectedImage);
 
