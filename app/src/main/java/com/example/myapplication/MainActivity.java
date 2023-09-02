@@ -54,8 +54,9 @@ public class MainActivity extends AppCompatActivity implements RecyclerViewIntef
         db = NoteDB.getInstance(this.getApplicationContext());
         ImageButton new_note = findViewById(R.id.new_note);
         ImageButton delete = findViewById(R.id.delete);
-        new_note.setOnClickListener(view ->
-                startActivityForResult(new Intent(MainActivity.this, Add_new_note_activity.class), NEW_NOTE));
+        new_note.setOnClickListener(view ->{
+                startActivityForResult(new Intent(MainActivity.this, Add_new_note_activity.class), NEW_NOTE);
+        });
 
         delete.setOnClickListener(view -> {
             deleteNote(0);
